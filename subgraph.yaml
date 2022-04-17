@@ -10,7 +10,7 @@ dataSources:
     name: ENSRegistry
     network: mainnet
     source:
-      address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'
+      address: '0x31E8Ae3616B67d953B99F9acB8c6013B56771e84'
       abi: EnsRegistry
     mapping:
       kind: ethereum/events
@@ -34,36 +34,10 @@ dataSources:
         - event: 'NewTTL(indexed bytes32,uint64)'
           handler: handleNewTTL
   - kind: ethereum/contract
-    name: ENSRegistryOld
-    network: mainnet
-    source:
-      address: '0x314159265dd8dbb310642f98f50c066173c1259b'
-      abi: EnsRegistry
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/ensRegistry.ts
-      entities:
-        - Domain
-        - Account
-        - Resolver
-      abis:
-        - name: EnsRegistry
-          file: ./abis/Registry.json
-      eventHandlers:
-        - event: 'Transfer(indexed bytes32,address)'
-          handler: handleTransferOldRegistry
-        - event: 'NewOwner(indexed bytes32,indexed bytes32,address)'
-          handler: handleNewOwnerOldRegistry
-        - event: 'NewResolver(indexed bytes32,address)'
-          handler: handleNewResolverOldRegistry
-        - event: 'NewTTL(indexed bytes32,uint64)'
-          handler: handleNewTTLOldRegistry
-  - kind: ethereum/contract
     name: Resolver
     network: mainnet
     source:
+      address: '0x7Eb562ACdB6Bb87C51fd7d8C7e625ca18F5407Dd'
       abi: Resolver
     mapping:
       kind: ethereum/events
@@ -108,7 +82,7 @@ dataSources:
     name: BaseRegistrar
     network: mainnet
     source:
-      address: '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85'
+      address: '0x13C463a84Fab8a51D4055567Bfd741c46a72626b'
       abi: BaseRegistrar
     mapping:
       kind: ethereum/events
@@ -134,7 +108,7 @@ dataSources:
     name: EthRegistrarController
     network: mainnet
     source:
-      address: '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5'
+      address: '0xbd04394EfE03Ac245044Be15c025CD8431202553'
       abi: EthRegistrarController
     mapping:
       kind: ethereum/events
