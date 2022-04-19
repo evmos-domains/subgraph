@@ -10,7 +10,7 @@ dataSources:
     name: ENSRegistry
     network: mainnet
     source:
-      address: '0x31E8Ae3616B67d953B99F9acB8c6013B56771e84'
+      address: '0xa6AC1Ab061DAb2edB8e1D597FD78D1b88B2d989e'
       abi: EnsRegistry
       startBlock: 27135521
     mapping:
@@ -38,7 +38,7 @@ dataSources:
     name: Resolver
     network: mainnet
     source:
-      address: '0x7Eb562ACdB6Bb87C51fd7d8C7e625ca18F5407Dd'
+      address: '0x690b7a9Cd0960e88825Da948B986f30A30977D33'
       abi: Resolver
       startBlock: 27135527
     mapping:
@@ -84,7 +84,7 @@ dataSources:
     name: BaseRegistrar
     network: mainnet
     source:
-      address: '0x13C463a84Fab8a51D4055567Bfd741c46a72626b'
+      address: '0xfA870dc94B617584D92646Ae950Eb8290D8ed8e8'
       abi: BaseRegistrar
       startBlock: 27135535
     mapping:
@@ -111,7 +111,7 @@ dataSources:
     name: EthRegistrarController
     network: mainnet
     source:
-      address: '0xbd04394EfE03Ac245044Be15c025CD8431202553'
+      address: '0x5a0f8bDcD2944910798452A790D71eba3BbE34c7'
       abi: EthRegistrarController
       startBlock: 27135549
     mapping:
