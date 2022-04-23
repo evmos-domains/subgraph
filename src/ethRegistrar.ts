@@ -25,7 +25,7 @@ import {
 // Import entity types generated from the GraphQL schema
 import { Account, Domain, Registration, NameRegistered, NameRenewed, NameTransferred } from './types/schema'
 
-var rootNode:ByteArray = byteArrayFromHex("93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae")
+var rootNode:ByteArray = byteArrayFromHex("724b2b3848e018e2643b1e22087779e04d4c860528acf6db62976c4f3d5ac502")
 
 export function handleNameRegistered(event: NameRegisteredEvent): void {
   let account = new Account(event.params.owner.toHex())
@@ -38,10 +38,7 @@ export function handleNameRegistered(event: NameRegisteredEvent): void {
   registration.expiryDate = event.params.expires
   registration.registrant = account.id
 
-  let labelName = ens.nameByHash(label.toHexString())
-  if (labelName != null) {
-    registration.labelName = labelName
-  }
+  registration.labelName = ''
   registration.save()
 
   let registrationEvent = new NameRegistered(createEventID(event))
