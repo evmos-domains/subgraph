@@ -2,7 +2,7 @@
 import {
   ByteArray,
   crypto,
-  ens
+  log
 } from '@graphprotocol/graph-ts'
 
 import {
@@ -51,7 +51,20 @@ export function handleNameRegistered(event: NameRegisteredEvent): void {
 }
 
 export function handleNameRegisteredByController(event: ControllerNameRegisteredEvent): void {
-  let domain = Domain.load(crypto.keccak256(concat(rootNode, event.params.label)).toHex())!
+    log.info(rootNode.toHexString(), []);
+    log.info(event.params.label.toHexString(), []);
+    log.info(crypto.keccak256(concat(rootNode, event.params.label)).toHex(), [])
+  let domain = Domain.load(crypto.keccak256(concat(rootNode, event.params.label)).toHex())
+    log.info("Domain loaded?", [])
+  if (domain == null) {
+      log.info(`DOMAIN NOT FOUND, FALLING BACK: ${event.params.name}`, [])
+    domain = new Domain(crypto.keccak256(concat(rootNode, event.params.label)).toHex())
+    domain.createdAt = event.block.timestamp;
+    domain.owner = event.params.owner.toHexString();
+    domain.labelhash = event.params.label;
+    domain.isMigrated = true;
+    domain.parent = rootNode.toHexString();
+  }
   if(domain.labelName !== event.params.name) {
     domain.labelName = event.params.name
     domain.name = event.params.name + '.evmos'
@@ -66,7 +79,19 @@ export function handleNameRegisteredByController(event: ControllerNameRegistered
 }
 
 export function handleNameRenewedByController(event: ControllerNameRenewedEvent): void {
-  let domain = Domain.load(crypto.keccak256(concat(rootNode, event.params.label)).toHex())!
+    log.info(rootNode.toHexString(), []);
+    log.info(event.params.label.toHexString(), []);
+    log.info(crypto.keccak256(concat(rootNode, event.params.label)).toHex(), [])
+  let domain = Domain.load(crypto.keccak256(concat(rootNode, event.params.label)).toHex())
+    log.info("Domain loaded?", [])
+  if (domain == null) {
+      log.info(`DOMAIN NOT FOUND, FALLING BACK: ${event.params.name}`, [])
+    domain = new Domain(crypto.keccak256(concat(rootNode, event.params.label)).toHex())
+    domain.createdAt = event.block.timestamp;
+    domain.labelhash = event.params.label;
+    domain.isMigrated = true;
+    domain.parent = rootNode.toHexString();
+  }
   if(domain.labelName !== event.params.name) {
     domain.labelName = event.params.name
     domain.name = event.params.name + '.evmos'
@@ -83,6 +108,8 @@ export function handleNameRenewedByController(event: ControllerNameRenewedEvent)
 export function handleNameRenewed(event: NameRenewedEvent): void {
   let label = uint256ToByteArray(event.params.id)
   let registration = Registration.load(label.toHex())!
+  if (registration == null)
+    registration = new Registration(label.toHex());
   registration.expiryDate = event.params.expires
   registration.save()
 

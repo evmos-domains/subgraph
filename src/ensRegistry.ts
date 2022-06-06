@@ -2,7 +2,7 @@
 import {
   BigInt,
   crypto,
-  ens
+  log
 } from '@graphprotocol/graph-ts'
 
 import {
@@ -33,7 +33,7 @@ function createDomain(node: string, timestamp: BigInt): Domain {
   return domain
 }
 
-function getDomain(node: string, timestamp: BigInt = BIG_INT_ZERO): Domain | null {
+export function getDomain(node: string, timestamp: BigInt = BIG_INT_ZERO): Domain | null {
   let domain = Domain.load(node)
   if(domain === null && node == ROOT_NODE) {
     return createDomain(node, timestamp)
@@ -42,7 +42,7 @@ function getDomain(node: string, timestamp: BigInt = BIG_INT_ZERO): Domain | nul
   }
 }
 
-function makeSubnode(event:NewOwnerEvent): string {
+export function makeSubnode(event:NewOwnerEvent): string {
   return crypto.keccak256(concat(event.params.node, event.params.label)).toHexString()
 }
 
@@ -71,6 +71,10 @@ function _handleNewOwner(event: NewOwnerEvent, isMigrated: boolean): void {
       domain.name = label
     } else {
       let parent = Domain.load(event.params.node.toHexString())!
+      if (!parent) {
+        parent = new Domain(event.params.node.toHexString());
+        parent.name = '[' + event.params.node.toHexString().slice(2) + ']'
+      }
       let name = parent.name
       if (label && name ) {
         domain.name = label + '.'  + name
@@ -102,6 +106,9 @@ export function handleTransfer(event: TransferEvent): void {
 
   // Update the domain owner
   let domain = getDomain(node)!
+  if(domain === null) {
+    domain = new Domain(node)
+  }
   domain.owner = event.params.owner.toHexString()
   domain.save()
 
@@ -119,6 +126,9 @@ export function handleNewResolver(event: NewResolverEvent): void {
 
   let node = event.params.node.toHexString()
   let domain = getDomain(node)!
+  if(domain === null) {
+    domain = new Domain(node)
+  }
   domain.resolver = id
 
   let resolver = Resolver.load(id)
@@ -144,6 +154,9 @@ export function handleNewResolver(event: NewResolverEvent): void {
 export function handleNewTTL(event: NewTTLEvent): void {
   let node = event.params.node.toHexString()
   let domain = getDomain(node)!
+  if(domain === null) {
+    domain = new Domain(node)
+  }
   domain.ttl = event.params.ttl
   domain.save()
 
